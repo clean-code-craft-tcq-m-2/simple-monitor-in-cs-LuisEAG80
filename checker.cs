@@ -1,38 +1,51 @@
 using System;
 using System.Diagnostics;
 
-class Checker
+namespace batteryChecker
 {
-    static bool batteryIsOk(float temperature, float soc, float chargeRate) {
-        if(temperature < 0 || temperature > 45) {
-            Console.WriteLine("Temperature is out of range!");
-            return false;
-        } else if(soc < 20 || soc > 80) {
-            Console.WriteLine("State of Charge is out of range!");
-            return false;
-        } else if(chargeRate > 0.8) {
-            Console.WriteLine("Charge Rate is out of range!");
-            return false;
+    class Checker
+    {
+        static void ExpectTrue(bool expression)
+        {
+            if (!expression)
+            {
+                Console.WriteLine("Expected true, but got false");
+                Environment.Exit(1);
+            }
         }
-        return true;
-    }
-
-    static void ExpectTrue(bool expression) {
-        if(!expression) {
-            Console.WriteLine("Expected true, but got false");
-            Environment.Exit(1);
+        static void ExpectFalse(bool expression)
+        {
+            if (expression)
+            {
+                Console.WriteLine("Expected false, but got true");
+                Environment.Exit(1);
+            }
         }
-    }
-    static void ExpectFalse(bool expression) {
-        if(expression) {
-            Console.WriteLine("Expected false, but got true");
-            Environment.Exit(1);
+        static int Main()
+        {
+            // Temperature Test
+            ExpectFalse(BatteryChecker.BatteryIsOk(ValidRanges.TemperatureRange.Min - 0.1f, 70, 0.7f));
+            ExpectTrue(BatteryChecker.BatteryIsOk(ValidRanges.TemperatureRange.Min, 70, 0.7f));
+            ExpectTrue(BatteryChecker.BatteryIsOk(ValidRanges.TemperatureRange.Min + 0.1f, 70, 0.7f));
+            ExpectTrue(BatteryChecker.BatteryIsOk(ValidRanges.TemperatureRange.Max - 0.1f, 70, 0.7f));
+            ExpectTrue(BatteryChecker.BatteryIsOk(ValidRanges.TemperatureRange.Max, 70, 0.7f));
+            ExpectFalse(BatteryChecker.BatteryIsOk(ValidRanges.TemperatureRange.Max + 0.1f, 70, 0.7f));
+            // State of Charge Test
+            ExpectFalse(BatteryChecker.BatteryIsOk(25, ValidRanges.StateOfChargeRange.Min - 0.1f, 0.7f));
+            ExpectTrue(BatteryChecker.BatteryIsOk(25, ValidRanges.StateOfChargeRange.Min, 0.7f));
+            ExpectTrue(BatteryChecker.BatteryIsOk(25, ValidRanges.StateOfChargeRange.Min + 0.1f, 0.7f));
+            ExpectTrue(BatteryChecker.BatteryIsOk(25, ValidRanges.StateOfChargeRange.Max - 0.1f, 0.7f));
+            ExpectTrue(BatteryChecker.BatteryIsOk(25, ValidRanges.StateOfChargeRange.Max, 0.7f));
+            ExpectFalse(BatteryChecker.BatteryIsOk(25, ValidRanges.StateOfChargeRange.Max + 0.1f, 0.7f));
+            // Charge Rate Test
+            ExpectFalse(BatteryChecker.BatteryIsOk(25, 70, ValidRanges.ChargeRateRange.Min - 0.1f));
+            ExpectTrue(BatteryChecker.BatteryIsOk(25, 70, ValidRanges.ChargeRateRange.Min));
+            ExpectTrue(BatteryChecker.BatteryIsOk(25, 70, ValidRanges.ChargeRateRange.Min + 0.1f));
+            ExpectTrue(BatteryChecker.BatteryIsOk(25, 70, ValidRanges.ChargeRateRange.Max - 0.1f));
+            ExpectTrue(BatteryChecker.BatteryIsOk(25, 70, ValidRanges.ChargeRateRange.Max));
+            ExpectFalse(BatteryChecker.BatteryIsOk(25, 70, ValidRanges.ChargeRateRange.Max + 0.1f));
+            Console.WriteLine("All ok");
+            return 0;
         }
-    }
-    static int Main() {
-        ExpectTrue(batteryIsOk(25, 70, 0.7f));
-        ExpectFalse(batteryIsOk(50, 85, 0.0f));
-        Console.WriteLine("All ok");
-        return 0;
     }
 }
