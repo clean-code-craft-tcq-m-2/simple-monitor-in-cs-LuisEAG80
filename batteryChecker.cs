@@ -5,12 +5,12 @@ namespace batteryChecker
 {
     public static class BatteryChecker
     {
-        public static bool BatteryIsOk(float temperature, float stateOfCharge, float chargeRate)
+        public static bool BatteryIsOk(ITemperature temperature, IStateOfCharge stateOfCharge, IChargeRate chargeRate)
         {
             return (
-                IsInRange(StatusType.Temperature, temperature) &&
-                IsInRange(StatusType.StateOfCharge, stateOfCharge) &&
-                IsInRange(StatusType.ChargeRate, chargeRate));
+                IsInRange(StatusType.Temperature, temperature.Value()) &&
+                IsInRange(StatusType.StateOfCharge, stateOfCharge.Value()) &&
+                IsInRange(StatusType.ChargeRate, chargeRate.Value()));
         }
 
         public static bool IsInRange(StatusType statusType, float statusValue)
@@ -36,7 +36,7 @@ namespace batteryChecker
         {
             return
                 StatusMessages.StatusNames[statusType] + " " +
-                StatusMessages.OutOfRangeMessage + " is " +
+                StatusMessages.OutOfRangeMessage + " " +
                 (isLow ? StatusMessages.Low : StatusMessages.High) ;
         }
     }

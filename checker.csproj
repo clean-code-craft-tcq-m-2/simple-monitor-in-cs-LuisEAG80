@@ -6,6 +6,9 @@
     <Compile Include="statusMessages.cs"/>
     <Compile Include="statusType.cs"/>
     <Compile Include="validRanges.cs"/>
+    <Compile Include="chargeRate.cs"/>
+    <Compile Include="temperature.cs"/>
+    <Compile Include="stateOfCharge.cs"/>
   </ItemGroup>
   <Target Name="Build">
     <Csc Sources="@(Compile)"/>  

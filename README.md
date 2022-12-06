@@ -1,3 +1,9 @@
+# Extensions
+## Extension 2: Support a language in addition to English
+German language was implemented
+## Extension 3: Accept input in different units
+Accept temperature input in different units
+
 # Programming Paradigms
 
 Electric Vehicles have BMS - Battery Management Systems
